@@ -12,5 +12,5 @@ export const supabaseUser = async () => {
   }
 
   event.context._user = error ? null : supabaseUser;
-  return event.context._user;
+  return event.context._user as typeof supabaseUser;
 };
