@@ -1,6 +1,6 @@
-export const supabaseUser = async () => {
+export const useSupabaseUser = async () => {
   const event = useEvent();
-  const client = await supabaseClient();
+  const client = await useSupabaseClient();
 
   const {
     data: { user: supabaseUser },

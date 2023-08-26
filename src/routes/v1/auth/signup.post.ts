@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     password: string;
   };
 
-  const client = await supabaseClient();
+  const client = await useSupabaseClient();
 
   const response = await client.auth.signUp({
     email,

@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-export const supabaseClient = async <T>(): Promise<SupabaseClient<T>> => {
+export const useSupabaseClient = async <T>(): Promise<SupabaseClient<T>> => {
   const event = useEvent();
 
   // get settings from runtime config
