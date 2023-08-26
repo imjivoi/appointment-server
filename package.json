@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.33.1",
-    "nitropack": "npm:nitropack-edge@latest"
+    "nitropack": "npm:nitropack-edge@latest",
+    "valibot": "^0.13.1"
   }
 }

@@ -4,6 +4,6 @@ export default defineEventHandler(async () => {
 
   return client
     .from("businesses")
-    .select("*, business_user(*)")
+    .select("*, users:business_user!inner(user_id)")
     .eq("business_user.user_id", user.id);
 });
