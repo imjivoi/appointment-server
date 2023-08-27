@@ -8,6 +8,11 @@ export default defineEventHandler(async (event) => {
   const { data, error } = await client.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        role: 'customer'
+      }
+    }
   });
 
   if (error) {

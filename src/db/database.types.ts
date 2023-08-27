@@ -119,7 +119,7 @@ export interface Database {
       }
       businesses: {
         Row: {
-          category_id: string | null
+          category_id: string
           created_at: string
           description: string | null
           id: string
@@ -128,7 +128,7 @@ export interface Database {
           updated_at: string
         }
         Insert: {
-          category_id?: string | null
+          category_id: string
           created_at?: string
           description?: string | null
           id?: string
@@ -137,7 +137,7 @@ export interface Database {
           updated_at?: string
         }
         Update: {
-          category_id?: string | null
+          category_id?: string
           created_at?: string
           description?: string | null
           id?: string
@@ -183,37 +183,6 @@ export interface Database {
           updated_at?: string
         }
         Relationships: []
-      }
-      invoices: {
-        Row: {
-          created_at: string | null
-          currency: string | null
-          id: string
-          plan_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          currency?: string | null
-          id?: string
-          plan_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          currency?: string | null
-          id?: string
-          plan_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "invoices_plan_id_fkey"
-            columns: ["plan_id"]
-            referencedRelation: "plans"
-            referencedColumns: ["id"]
-          }
-        ]
       }
       plan_options: {
         Row: {
@@ -408,94 +377,13 @@ export interface Database {
           }
         ]
       }
-      subscriptions: {
-        Row: {
-          "cancelled_at ": string | null
-          created_at: string | null
-          "downgraded_at ": string | null
-          "downgraded_to_plan_id ": string | null
-          ends_at: string | null
-          id: string
-          invoice_id: string | null
-          plan_id: string | null
-          "renewed_at ": string | null
-          "renewed_subscription_id ": string | null
-          starts_at: string
-          updated_at: string | null
-          "upgraded_at ": string | null
-          "upgraded_to_plan_id ": string | null
-        }
-        Insert: {
-          "cancelled_at "?: string | null
-          created_at?: string | null
-          "downgraded_at "?: string | null
-          "downgraded_to_plan_id "?: string | null
-          ends_at?: string | null
-          id?: string
-          invoice_id?: string | null
-          plan_id?: string | null
-          "renewed_at "?: string | null
-          "renewed_subscription_id "?: string | null
-          starts_at: string
-          updated_at?: string | null
-          "upgraded_at "?: string | null
-          "upgraded_to_plan_id "?: string | null
-        }
-        Update: {
-          "cancelled_at "?: string | null
-          created_at?: string | null
-          "downgraded_at "?: string | null
-          "downgraded_to_plan_id "?: string | null
-          ends_at?: string | null
-          id?: string
-          invoice_id?: string | null
-          plan_id?: string | null
-          "renewed_at "?: string | null
-          "renewed_subscription_id "?: string | null
-          starts_at?: string
-          updated_at?: string | null
-          "upgraded_at "?: string | null
-          "upgraded_to_plan_id "?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "subscriptions_downgraded_to_plan_id _fkey"
-            columns: ["downgraded_to_plan_id "]
-            referencedRelation: "plans"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscriptions_invoice_id_fkey"
-            columns: ["invoice_id"]
-            referencedRelation: "invoices"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscriptions_plan_id_fkey"
-            columns: ["plan_id"]
-            referencedRelation: "plans"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscriptions_renewed_subscription_id _fkey"
-            columns: ["renewed_subscription_id "]
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscriptions_upgraded_to_plan_id _fkey"
-            columns: ["upgraded_to_plan_id "]
-            referencedRelation: "plans"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       time_slots: {
         Row: {
           business_id: string
           created_at: string | null
           end_at: string
           id: string
+          service_id: string
           start_at: string
           updated_at: string | null
         }
@@ -504,6 +392,7 @@ export interface Database {
           created_at?: string | null
           end_at: string
           id?: string
+          service_id: string
           start_at: string
           updated_at?: string | null
         }
@@ -512,6 +401,7 @@ export interface Database {
           created_at?: string | null
           end_at?: string
           id?: string
+          service_id?: string
           start_at?: string
           updated_at?: string | null
         }
@@ -520,6 +410,12 @@ export interface Database {
             foreignKeyName: "time_slots_business_id_fkey"
             columns: ["business_id"]
             referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_slots_service_id_fkey"
+            columns: ["service_id"]
+            referencedRelation: "services"
             referencedColumns: ["id"]
           }
         ]

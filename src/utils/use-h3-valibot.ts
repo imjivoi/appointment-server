@@ -33,7 +33,7 @@ export async function useValidatedBody<T extends BaseSchemaAsync>(
 }
 
 /**
- * Parse and validate request body from event handler. Throws an error if validation fails.
+ * Parse and validate request params from event handler. Throws an error if validation fails.
  * @param event - A H3 event object.
  * @param schema - A Valibot Schema
  */
@@ -49,4 +49,23 @@ export async function useValidatedParams<T extends BaseSchemaAsync>(
     catch (error) {
       throw createBadRequest(error)
     }
+}
+
+/**
+ * Parse and validate request quwey from event handler. Throws an error if validation fails.
+ * @param event - A H3 event object.
+ * @param schema - A Valibot Schema
+ */
+export async function useValidatedQuery<T extends BaseSchemaAsync>(
+  event: H3Event,
+  schema: T,
+): Promise<Output<T>> {
+  try {
+    const query = getQuery(event)
+    const parsed = await parseAsync<T>(schema, query)
+    return parsed
+  }
+  catch (error) {
+    throw createBadRequest(error)
+  }
 }

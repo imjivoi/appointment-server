@@ -5,9 +5,6 @@ export default defineEventHandler(async (event) => {
     provider: "google",
     options: {
       redirectTo: process.env.SUPABASE_AUTH_INTERNAL_GOOGLE_REDIRECT,
-      queryParams: {
-        role: "customer",
-      },
     },
   });
   return sendRedirect(event, response.data.url);

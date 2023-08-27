@@ -1,16 +1,19 @@
 import * as v from "valibot";
+import { generateSlug } from "../../../utils/generate-slug";
 
 export default defineEventHandler(async (event) => {
-  const { name, description, slug } = await useValidatedBody(
+  const { name, description, category_id } = await useValidatedBody(
     event,
     CreateBusinessSchema
   );
   const user = await useSupabaseUser();
   const client = await useSupabaseClient();
 
+  const slug = generateSlug(name);
+
   const { data: businessData, error: businessError } = await client
     .from("businesses")
-    .insert([{ name, description, slug }])
+    .insert([{ name, description, slug, category_id }])
     .select()
     .single();
 
@@ -38,6 +41,5 @@ export default defineEventHandler(async (event) => {
 const CreateBusinessSchema = v.objectAsync({
   name: v.string([v.minLength(3), v.maxLength(50)]),
   description: v.optional(v.string([v.minLength(3), v.maxLength(200)])),
-  slug: v.string([v.minLength(3), v.maxLength(50)]),
-  category_id: v.optional(v.string([v.uuid()])),
+  category_id: v.string([v.uuid()]),
 });

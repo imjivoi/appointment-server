@@ -7,8 +7,9 @@
     "preview": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^2.2.1",
     "@supabase/supabase-js": "^2.33.1",
-    "nitropack": "npm:nitropack-edge@latest",
+    "nitropack": "^2.6.1",
     "valibot": "^0.13.1"
   }
 }

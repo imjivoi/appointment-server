@@ -1,14 +1,17 @@
 import * as v from "valibot";
 
 export default defineEventHandler(async (event) => {
-  const { business_id } = await useValidatedParams(event, GetTimeSlotsSchema);
+  const { business_id, service_id } = await useValidatedQuery(
+    event,
+    GetTimeSlotsSchema
+  );
 
   const client = await useSupabaseClient();
 
   const { data, error } = await client
     .from("time_slots")
     .select()
-    .eq("business_id", business_id);
+    .eq("service_id", service_id);
 
   if (error) {
     return sendError(
@@ -21,5 +24,6 @@ export default defineEventHandler(async (event) => {
 });
 
 const GetTimeSlotsSchema = v.objectAsync({
-  business_id: v.string([v.uuid()]),
+  business_id: v.optional(v.string([v.uuid()])),
+  service_id: v.string([v.uuid()]),
 });

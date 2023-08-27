@@ -3,7 +3,7 @@ returns trigger as $$
 declare
   role_id uuid;
 begin
-  select id from public.roles where name = new.raw_user_meta_data->>'role' or name = 'customer' into role_id;
+  select id from public.roles where name = new.raw_user_meta_data->>'role' or name = 'business' into role_id;
   insert into public.role_user (role_id, user_id)
   values (role_id, new.id);
   return new;
