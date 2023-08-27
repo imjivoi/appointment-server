@@ -49,7 +49,7 @@ export interface Database {
           canceled?: boolean
           canceled_reason?: string | null
           created_at?: string
-          id: string
+          id?: string
           issuer_id: string
           time_slot_id: string
         }
