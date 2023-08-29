@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export default defineEventHandler(async (event) => {
+export default defineAuthEventHandler(async (event) => {
   const { id, start_at, end_at } = await useValidatedParams(
     event,
     GetAppointmentSchema

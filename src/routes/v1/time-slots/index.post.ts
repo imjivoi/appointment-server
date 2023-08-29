@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export default defineEventHandler(async (event) => {
+export default defineBusinessRoleEventHandler(async (event, user) => {
   const { business_id, service_id, slots } = await useValidatedBody(
     event,
     CreateTimeSlotSchema
@@ -8,16 +8,33 @@ export default defineEventHandler(async (event) => {
 
   const client = await useSupabaseClient();
 
+  //**Check  if owner of business_id business*/
+  const { data: businessOwnerData, error: businessOwnerError } = await client
+    .from("business_user")
+    .select("user_id")
+    .eq("business_id", business_id)
+    .eq("user_id", user.id);
+
+  if (businessOwnerError || !businessOwnerData?.length) {
+    return sendError(
+      event,
+      createError({
+        statusMessage: "Forbidden. You are not business owner",
+        statusCode: 403,
+      })
+    );
+  }
+
   const insertData = slots.map((slot: Slot) => ({
     ...slot,
     business_id,
     service_id,
   }));
+
   const { data, error } = await client
     .from("time_slots")
     .insert(insertData)
-    .select()
-    .single();
+    .select();
 
   if (error) {
     return sendError(

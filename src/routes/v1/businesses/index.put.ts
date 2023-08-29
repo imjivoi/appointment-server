@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export default defineEventHandler(async (event) => {
+export default defineBusinessRoleEventHandler(async (event) => {
   const { name, description, slug, category_id } = await useValidatedBody(
     event,
     UpdateBusinessSchema
@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
 });
 
 const UpdateBusinessSchema = v.objectAsync({
+  id: v.string([v.uuid()]),
   name: v.string([v.minLength(3), v.maxLength(50)]),
   description: v.optional(v.string([v.minLength(3), v.maxLength(200)])),
   slug: v.string([v.minLength(3), v.maxLength(50)]),

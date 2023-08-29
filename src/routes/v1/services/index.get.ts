@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export default defineEventHandler(async (event) => {
+export default defineAuthEventHandler(async (event) => {
   const { business_id, id, slug } = await useValidatedQuery(
     event,
     GetServicesSchema

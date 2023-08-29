@@ -1,12 +1,11 @@
 import * as v from "valibot";
 import { generateSlug } from "../../../utils/generate-slug";
 
-export default defineEventHandler(async (event) => {
+export default defineBusinessRoleEventHandler(async (event, user) => {
   const { name, description, category_id } = await useValidatedBody(
     event,
     CreateBusinessSchema
   );
-  const user = await useSupabaseUser();
   const client = await useSupabaseClient();
 
   const slug = generateSlug(name);

@@ -1,4 +1,4 @@
-export default defineEventHandler(async (event) => {
+export default defineAuthEventHandler(async (event) => {
   const client = await useSupabaseClient();
 
   const { data, error } = await client.from("categories").select();

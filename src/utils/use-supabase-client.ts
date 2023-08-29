@@ -43,3 +43,33 @@ export const useSupabaseClient = async (): Promise<
   }
   return supabaseClient;
 };
+
+export const useSupabaseServiceRole = (): SupabaseClient<Database> => {
+  const event = useEvent();
+
+  const {
+    supabase: { url, serviceRoleKey },
+  } = useRuntimeConfig();
+
+  // Make sure service key is set
+  if (!serviceRoleKey) {
+    throw new Error("Missing `SUPABASE_SERVICE_ROLE_KEY` in `.env`");
+  }
+
+  // No need to recreate client if exists in request context
+  if (!event.context._supabaseServiceRole) {
+    const auth = {
+      detectSessionInUrl: false,
+      persistSession: false,
+      autoRefreshToken: false,
+    };
+
+    const supabaseClient = createClient<Database>(url, serviceRoleKey, {
+      auth,
+    });
+
+    event.context._supabaseServiceRole = supabaseClient;
+  }
+
+  return event.context._supabaseServiceRole as SupabaseClient<Database>;
+};

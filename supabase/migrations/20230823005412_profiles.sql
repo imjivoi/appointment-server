@@ -6,6 +6,8 @@ create table
     first_name text null,
     last_name text null,
     avatar_url text null,
+    email text,
+    phone text null,
     constraint profiles_pkey primary key (id),
     constraint profiles_id_fkey foreign key (id) references auth.users (id) on delete set null
   ) tablespace pg_default;
