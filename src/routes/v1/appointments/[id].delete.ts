@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
   const { error } = await client.from("appointments").delete().eq("id", id);
 
   if (error) {
+    logger.error(error);
     return sendError(
       event,
       createError({ statusMessage: "Can not delete appointment" })

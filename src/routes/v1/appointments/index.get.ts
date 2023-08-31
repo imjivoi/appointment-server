@@ -25,6 +25,7 @@ export default defineAuthEventHandler(async (event) => {
   const { data: appointment, error } = await query;
 
   if (error) {
+    logger.error(error);
     return sendError(
       event,
       createError({ statusMessage: "Can not get appointment" })

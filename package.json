@@ -4,12 +4,15 @@
     "prepare": "nitropack prepare",
     "dev": "nitropack dev",
     "build": "nitropack build",
-    "preview": "node .output/server/index.mjs"
+    "preview": "node .output/server/index.mjs",
+    "supabase:types": "npx supabase gen types typescript --local > src/db/database.types.ts"
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
     "@supabase/supabase-js": "^2.33.1",
+    "consola": "^3.2.3",
     "nitropack": "^2.6.1",
+    "nodemailer": "^6.9.4",
     "valibot": "^0.13.1"
   }
 }

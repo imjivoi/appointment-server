@@ -10,5 +10,10 @@ export default defineNitroConfig({
       key: process.env.SUPABASE_KEY,
       serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     },
+    smtp: {
+      host: process.env.MAILER_SMTP_HOST,
+      port: process.env.MAILER_SMTP_PORT,
+    },
+    clientUrl: process.env.CLIENT_URL,
   },
 });

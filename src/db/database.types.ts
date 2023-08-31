@@ -34,11 +34,45 @@ export interface Database {
   }
   public: {
     Tables: {
+      appointment_tokens: {
+        Row: {
+          appointment_id: string
+          created_at: string | null
+          id: string
+          token: string
+          updated_at: string | null
+        }
+        Insert: {
+          appointment_id: string
+          created_at?: string | null
+          id?: string
+          token: string
+          updated_at?: string | null
+        }
+        Update: {
+          appointment_id?: string
+          created_at?: string | null
+          id?: string
+          token?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointment_tokens_appointment_id_fkey"
+            columns: ["appointment_id"]
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       appointments: {
         Row: {
           business_id: string
           canceled: boolean
+          canceled_at: string | null
           canceled_reason: string | null
+          confirmed: boolean | null
+          confirmed_at: string | null
           created_at: string
           id: string
           issuer_id: string
@@ -47,7 +81,10 @@ export interface Database {
         Insert: {
           business_id: string
           canceled?: boolean
+          canceled_at?: string | null
           canceled_reason?: string | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           issuer_id: string
@@ -56,7 +93,10 @@ export interface Database {
         Update: {
           business_id?: string
           canceled?: boolean
+          canceled_at?: string | null
           canceled_reason?: string | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           issuer_id?: string
@@ -255,25 +295,31 @@ export interface Database {
         Row: {
           avatar_url: string | null
           created_at: string
+          email: string | null
           first_name: string | null
           id: string
           last_name: string | null
+          phone: string | null
           updated_at: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          email?: string | null
           first_name?: string | null
           id: string
           last_name?: string | null
+          phone?: string | null
           updated_at?: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
+          email?: string | null
           first_name?: string | null
           id?: string
           last_name?: string | null
+          phone?: string | null
           updated_at?: string
         }
         Relationships: [

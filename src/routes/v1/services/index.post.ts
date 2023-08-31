@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import { generateSlug } from "../../../utils/generate-slug";
 
-export default defineBusinessRoleEventHandler(async (event) => {
+export default defineBusinessRoleEventHandler(async (event, user) => {
   const { name, description, business_id } = await useValidatedBody(
     event,
     CreateServiceSchema

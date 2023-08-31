@@ -7,8 +7,11 @@ create table
     business_id uuid not null,
     issuer_id uuid not null,
     time_slot_id uuid not null,
+    confirmed boolean null default false,
+    confirmed_at timestamp with time zone null,
+    canceled_at timestamp with time zone null,
+    updated_at timestamp with time zone null default now(),
     constraint appointments_pkey primary key (id),
-    constraint appointments_time_slot_id_key unique (time_slot_id),
     constraint appointments_business_id_fkey foreign key (business_id) references businesses (id) on delete cascade,
     constraint appointments_issuer_id_fkey foreign key (issuer_id) references auth.users (id) on delete set null,
     constraint appointments_time_slot_id_fkey foreign key (time_slot_id) references time_slots (id) on delete set null
