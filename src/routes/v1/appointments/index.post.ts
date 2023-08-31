@@ -17,6 +17,7 @@ export default eventHandler(async (event) => {
     .select()
     .eq("time_slot_id", time_slot_id)
     .eq("confirmed", true)
+    .lte("start_at", new Date().toISOString())
     .maybeSingle();
 
   if (occupiedTimeSlot || occupiedTimeSlotError) {

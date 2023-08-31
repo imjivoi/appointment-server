@@ -8,7 +8,12 @@ export default defineEventHandler(async (event) => {
 
   const client = await useSupabaseClient();
 
-  const query = client.from("time_slots").select('*, appointment:appointments()').is("appointment", null);
+  const query = client
+    .from("time_slots")
+    .select("*, appointment:appointments()")
+    .is("appointment", null)
+    .gte("start_at", new Date().toISOString())
+    .order("start_at", { ascending: true });
 
   if (service_id) {
     query.eq("service_id", service_id);
@@ -21,7 +26,7 @@ export default defineEventHandler(async (event) => {
   const { data, error } = await query;
 
   if (error) {
-    console.log(error)
+    logger.error(error);
     return sendError(
       event,
       createError({ statusMessage: "Can not get time slots" })

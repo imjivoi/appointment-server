@@ -47,10 +47,31 @@ export default defineBusinessRoleEventHandler(async (event, user) => {
 });
 
 const SlotSchema = v.nonOptional(
-  v.object({
-    start_at: v.string([v.isoTimestamp()]),
-    end_at: v.string([v.isoTimestamp()]),
-  })
+  v.object(
+    {
+      start_at: v.string([
+        v.isoTimestamp(),
+        v.custom(
+          (input) => new Date(input).getTime() >= new Date().getTime(),
+          "Start date must be in future"
+        ),
+      ]),
+      end_at: v.string([
+        v.isoTimestamp(),
+        v.custom(
+          (input) => new Date(input).getTime() >= new Date().getTime(),
+          "End date must be in future"
+        ),
+      ]),
+    },
+    [
+      v.custom(
+        ({ start_at, end_at }) =>
+          new Date(start_at).getTime() < new Date(end_at).getTime(),
+        "Start date must be less than end date"
+      ),
+    ]
+  )
 );
 
 type Slot = Required<v.Input<typeof SlotSchema>>;
