@@ -1,8 +1,8 @@
 insert into public.categories (name, slug ) 
-  values('peluquería', 'peluqueria'), 
-        ('medicina', 'medicina'), 
-        ('belleza', 'belleza'),
-        ('servicios domésticos', 'servicios-domesticos'),
-        ('servicios jurídicos', 'servicios-juridicos'),
-        ('eventos', 'eventos'),
-        ('otras', 'otras');
+  values('Peluquería', 'peluqueria'), 
+        ('Medicina', 'medicina'), 
+        ('Belleza', 'belleza'),
+        ('Servicios domésticos', 'servicios-domesticos'),
+        ('Servicios jurídicos', 'servicios-juridicos'),
+        ('Eventos', 'eventos'),
+        ('Otros', 'otros');

@@ -7,6 +7,7 @@ create table
     name text not null,
     description text null,
     slug text not null,
+    duration bigint not null,
     constraint services_pkey primary key (id),
     constraint services_business_id_fkey foreign key (business_id) references businesses (id) on delete cascade
   ) tablespace pg_default;

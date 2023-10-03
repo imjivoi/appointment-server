@@ -1,1 +1,1 @@
-insert into public.roles (name) values ('customer'), ('business'), ('admin');
+insert into public.roles (name) values ('customer'), ('business'), ('admin'), ('staff');
