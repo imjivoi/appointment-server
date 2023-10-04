@@ -1,7 +1,9 @@
 import * as v from "valibot";
 
+//** Сделать проверку запсией на текущий день и сгенерировать доступные слоты*/
+
 export default defineEventHandler(async (event) => {
-  const { business_id, service_id } = await useValidatedQuery(
+  const { service_id, day } = await useValidatedQuery(
     event,
     GetAvailableTimeSlotsSchema
   );
@@ -9,19 +11,12 @@ export default defineEventHandler(async (event) => {
   const client = await useSupabaseClient();
 
   const query = client
-    .from("time_slots")
-    .select("*, appointment:appointments()")
+    .from("appointment")
+    .select()
+    .eq("service_id", service_id)
     .is("appointment", null)
     .gte("start_at", new Date().toISOString())
     .order("start_at", { ascending: true });
-
-  if (service_id) {
-    query.eq("service_id", service_id);
-  }
-
-  if (business_id) {
-    query.eq("business_id", business_id);
-  }
 
   const { data, error } = await query;
 
@@ -37,6 +32,6 @@ export default defineEventHandler(async (event) => {
 });
 
 const GetAvailableTimeSlotsSchema = v.objectAsync({
-  business_id: v.optional(v.string([v.uuid()])),
   service_id: v.string([v.uuid()]),
+  day: v.transform(v.date(), (value) => new Date(value)),
 });

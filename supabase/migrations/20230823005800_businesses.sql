@@ -6,7 +6,7 @@ create table
     name text not null,
     description text null,
     slug text not null,
-    category_id uuid not null,
+    category_id uuid null,
     constraint businesses_pkey primary key (id),
     constraint businesses_slug_key unique (slug),
     constraint businesses_category_id_fkey foreign key (category_id) references categories (id),

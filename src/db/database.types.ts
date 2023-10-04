@@ -77,6 +77,7 @@ export interface Database {
           id: string
           issuer_id: string
           time_slot_id: string
+          updated_at: string | null
         }
         Insert: {
           business_id: string
@@ -89,6 +90,7 @@ export interface Database {
           id?: string
           issuer_id: string
           time_slot_id: string
+          updated_at?: string | null
         }
         Update: {
           business_id?: string
@@ -101,6 +103,7 @@ export interface Database {
           id?: string
           issuer_id?: string
           time_slot_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -159,7 +162,7 @@ export interface Database {
       }
       businesses: {
         Row: {
-          category_id: string
+          category_id: string | null
           created_at: string
           description: string | null
           id: string
@@ -168,7 +171,7 @@ export interface Database {
           updated_at: string
         }
         Insert: {
-          category_id: string
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -177,7 +180,7 @@ export interface Database {
           updated_at?: string
         }
         Update: {
-          category_id?: string
+          category_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -391,6 +394,7 @@ export interface Database {
           business_id: string
           created_at: string | null
           description: string | null
+          duration: number
           id: string
           name: string
           slug: string
@@ -400,6 +404,7 @@ export interface Database {
           business_id: string
           created_at?: string | null
           description?: string | null
+          duration: number
           id?: string
           name: string
           slug: string
@@ -409,6 +414,7 @@ export interface Database {
           business_id?: string
           created_at?: string | null
           description?: string | null
+          duration?: number
           id?: string
           name?: string
           slug?: string
@@ -425,8 +431,8 @@ export interface Database {
       }
       time_slots: {
         Row: {
-          business_id: string
           created_at: string | null
+          day_of_week: number
           end_at: string
           id: string
           service_id: string
@@ -434,8 +440,8 @@ export interface Database {
           updated_at: string | null
         }
         Insert: {
-          business_id: string
           created_at?: string | null
+          day_of_week: number
           end_at: string
           id?: string
           service_id: string
@@ -443,8 +449,8 @@ export interface Database {
           updated_at?: string | null
         }
         Update: {
-          business_id?: string
           created_at?: string | null
+          day_of_week?: number
           end_at?: string
           id?: string
           service_id?: string
@@ -452,12 +458,6 @@ export interface Database {
           updated_at?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "time_slots_business_id_fkey"
-            columns: ["business_id"]
-            referencedRelation: "businesses"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "time_slots_service_id_fkey"
             columns: ["service_id"]

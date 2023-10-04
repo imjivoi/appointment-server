@@ -30,8 +30,8 @@ export const useSupabaseClient = async (): Promise<
   const { data } = await supabaseClient.auth.getSession();
   if (data?.session?.user?.aud !== "authenticated") {
     // create a session from cookies
-    const accessToken = getCookie(event, `sb-access-token`);
-    const refreshToken = getCookie(event, `sb-refresh-token`);
+    const accessToken = getCookie(event, `access-token`);
+    const refreshToken = getCookie(event, `refresh-token`);
 
     if (!accessToken || !refreshToken) return supabaseClient;
 

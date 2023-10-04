@@ -40,5 +40,5 @@ export default defineBusinessRoleEventHandler(async (event, user) => {
 const CreateBusinessSchema = v.objectAsync({
   name: v.string([v.minLength(3), v.maxLength(50)]),
   description: v.optional(v.string([v.minLength(3), v.maxLength(200)])),
-  category_id: v.string([v.uuid()]),
+  category_id: v.optional(v.string([v.uuid()])),
 });

@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
     password,
     options: {
       data: {
-        role: 'customer'
-      }
-    }
+        role: "customer",
+      },
+    },
   });
 
   if (error) {
@@ -29,10 +29,19 @@ export default defineEventHandler(async (event) => {
     );
   }
 
-  setCookie(event, "sb-access-token", data.session.access_token);
-  setCookie(event, "sb-refresh-token", data.session.refresh_token);
+  setCookie(event, "access-token", data.session.access_token);
+  setCookie(event, "refresh-token", data.session.refresh_token);
 
-  return data;
+  return {
+    user: {
+      id: data.user.id,
+      email: data.user.email,
+    },
+    session: {
+      access_token: data.session.access_token,
+      refresh_token: data.session.refresh_token,
+    },
+  };
 });
 
 const SignUpSchema = v.objectAsync({
