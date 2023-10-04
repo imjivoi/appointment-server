@@ -11,6 +11,7 @@
     "@sindresorhus/slugify": "^2.2.1",
     "@supabase/supabase-js": "^2.33.1",
     "consola": "^3.2.3",
+    "date-fns": "^2.30.0",
     "nitropack": "^2.6.1",
     "nodemailer": "^6.9.4",
     "valibot": "^0.13.1"
