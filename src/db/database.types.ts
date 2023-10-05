@@ -67,49 +67,55 @@ export interface Database {
       }
       appointments: {
         Row: {
-          business_id: string
           canceled: boolean
           canceled_at: string | null
           canceled_reason: string | null
           confirmed: boolean | null
           confirmed_at: string | null
           created_at: string
+          created_by_id: string
+          end_at: string
           id: string
           issuer_id: string
-          time_slot_id: string
+          service_id: string
+          start_at: string
           updated_at: string | null
         }
         Insert: {
-          business_id: string
           canceled?: boolean
           canceled_at?: string | null
           canceled_reason?: string | null
           confirmed?: boolean | null
           confirmed_at?: string | null
           created_at?: string
+          created_by_id: string
+          end_at: string
           id?: string
           issuer_id: string
-          time_slot_id: string
+          service_id: string
+          start_at: string
           updated_at?: string | null
         }
         Update: {
-          business_id?: string
           canceled?: boolean
           canceled_at?: string | null
           canceled_reason?: string | null
           confirmed?: boolean | null
           confirmed_at?: string | null
           created_at?: string
+          created_by_id?: string
+          end_at?: string
           id?: string
           issuer_id?: string
-          time_slot_id?: string
+          service_id?: string
+          start_at?: string
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "appointments_business_id_fkey"
-            columns: ["business_id"]
-            referencedRelation: "businesses"
+            foreignKeyName: "appointments_created_by_id_fkey"
+            columns: ["created_by_id"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
@@ -119,9 +125,9 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "appointments_time_slot_id_fkey"
-            columns: ["time_slot_id"]
-            referencedRelation: "time_slots"
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            referencedRelation: "services"
             referencedColumns: ["id"]
           }
         ]
@@ -431,6 +437,7 @@ export interface Database {
       }
       time_slots: {
         Row: {
+          active: boolean
           created_at: string | null
           day_of_week: number
           end_at: string
@@ -440,6 +447,7 @@ export interface Database {
           updated_at: string | null
         }
         Insert: {
+          active?: boolean
           created_at?: string | null
           day_of_week: number
           end_at: string
@@ -449,6 +457,7 @@ export interface Database {
           updated_at?: string | null
         }
         Update: {
+          active?: boolean
           created_at?: string | null
           day_of_week?: number
           end_at?: string

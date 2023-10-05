@@ -1,9 +1,10 @@
 import * as v from "valibot";
 
 import mailer from "../../../mailer";
+import { createAppointment } from "../../../models/appointments";
 
 export default eventHandler(async (event) => {
-  const { business_id, time_slot_id, email, phone } = await useValidatedBody(
+  const { service_id, start_at, email, phone } = await useValidatedBody(
     event,
     CreateAppointmentSchema
   );
@@ -12,24 +13,6 @@ export default eventHandler(async (event) => {
 
   const client = await useSupabaseClient();
 
-  const { data: occupiedTimeSlot, error: occupiedTimeSlotError } = await client
-    .from("appointments")
-    .select()
-    .eq("time_slot_id", time_slot_id)
-    .eq("confirmed", true)
-    .lte("start_at", new Date().toISOString())
-    .maybeSingle();
-
-  if (occupiedTimeSlot || occupiedTimeSlotError) {
-    logger.error(`Time slot with id ${time_slot_id} is not available`);
-    return sendError(
-      event,
-      createError({
-        statusMessage: "Time slot is not available",
-        statusCode: 400,
-      })
-    );
-  }
   let user = await useSupabaseUser().catch(() => null);
   let createUserError;
   let getUserError;
@@ -56,49 +39,50 @@ export default eventHandler(async (event) => {
   }
 
   if (createUserError) {
-    logger.error(createUserError)
+    logger.error(createUserError);
     return sendError(
       event,
       createError({ statusMessage: "Can not create appointment" })
     );
   }
 
-  const { data: appointment, error } = await client
-    .from("appointments")
-    .insert({ business_id, time_slot_id, issuer_id: user.id })
-    .select()
-    .single();
+  const appointment = await createAppointment(
+    service_id,
+    user.id,
+    user.id,
+    start_at
+  );
 
-  if (error) {
-    logger.error(error);
-    return sendError(
-      event,
-      createError({ statusMessage: "Can not create appointment" })
-    );
-  }
-
-  const { data: appointmentToken, error: appointmentTokenError } = await client
-    .from("appointment_tokens")
-    .insert({ token: generateConfirmToken(), appointment_id: appointment.id })
-    .select()
-    .single();
-  const confirmLink = `${config.clientUrl}/confirm-appointment/${appointmentToken.token}`;
-  const cancelLink = `${config.clientUrl}/cancel-appointment/${appointmentToken.token}`;
-  await mailer.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: user.email, // list of receivers
-    subject: "Appointment confirmation", // Subject line
-    text: "Link for confirm appointment", // plain text body
-    html: `<div><a  href="${confirmLink}">Confirm</a><a href="${cancelLink}">Cancel</a></div>`,
-  });
+  try {
+    const { data: appointmentToken, error: appointmentTokenError } =
+      await client
+        .from("appointment_tokens")
+        .insert({
+          token: generateConfirmToken(),
+          appointment_id: appointment.id,
+        })
+        .select()
+        .single();
+    const confirmLink = `${config.clientUrl}/confirm-appointment/${appointmentToken.token}`;
+    const cancelLink = `${config.clientUrl}/cancel-appointment/${appointmentToken.token}`;
+    await mailer.sendMail({
+      from: '"Fred Foo 👻" <foo@example.com>', // sender address
+      to: user.email, // list of receivers
+      subject: "Appointment confirmation", // Subject line
+      text: "Link for confirm appointment", // plain text body
+      html: `<div><a  href="${confirmLink}">Confirm</a><a href="${cancelLink}">Cancel</a></div>`,
+    });
+  } catch (error) {}
 
   return appointment;
 });
 
 const CreateAppointmentSchema = v.objectAsync({
-  business_id: v.string([v.uuid()]),
   service_id: v.string([v.uuid()]),
-  time_slot_id: v.string([v.uuid()]),
+  start_at: v.coerce(
+    v.date([v.minValue(new Date())]),
+    (v: string) => new Date(v)
+  ),
   email: v.stringAsync([v.email(), v.customAsync(isValidMx, "Invalid email")]),
   phone: v.optional(v.string([phoneValidation])),
 });
