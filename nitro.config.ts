@@ -15,5 +15,6 @@ export default defineNitroConfig({
       port: process.env.MAILER_SMTP_PORT,
     },
     clientUrl: process.env.CLIENT_URL,
+    mongoDbUri: process.env.MONGO_DB_URI,
   },
 });

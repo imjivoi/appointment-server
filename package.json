@@ -8,6 +8,7 @@
     "supabase:types": "npx supabase gen types typescript --local > src/db/database.types.ts"
   },
   "dependencies": {
+    "@hokify/agenda": "^6.3.0",
     "@sindresorhus/slugify": "^2.2.1",
     "@supabase/supabase-js": "^2.33.1",
     "consola": "^3.2.3",
