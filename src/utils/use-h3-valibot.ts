@@ -1,16 +1,16 @@
-import { createError, getRouterParams, readBody, type H3Event } from 'h3'
-import  { type BaseSchemaAsync, parseAsync, Output } from 'valibot'
+import { createError, getRouterParams, readBody, type H3Event } from "h3";
+import { type BaseSchemaAsync, parseAsync, Output, flatten } from "valibot";
 
-const DEFAULT_ERROR_MESSAGE = 'Bad Request'
-const DEFAULT_ERROR_STATUS = 400
+const DEFAULT_ERROR_MESSAGE = "Bad Request";
+const DEFAULT_ERROR_STATUS = 400;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createBadRequest(error: any) {
   return createError({
     statusCode: DEFAULT_ERROR_STATUS,
     statusText: DEFAULT_ERROR_MESSAGE,
-    data: error,
-  })
+    data: flatten(error).nested,
+  });
 }
 
 /**
@@ -19,17 +19,16 @@ function createBadRequest(error: any) {
  * @param schema - A Valibot Schema
  */
 export async function useValidatedBody<T extends BaseSchemaAsync>(
-    event: H3Event,
-    schema: T,
-  ): Promise<Output<T>> {
-    try {
-      const body = await readBody(event)
-      const parsed = await parseAsync<T>(schema, body)
-      return parsed
-    }
-    catch (error) {
-      throw createBadRequest(error)
-    }
+  event: H3Event,
+  schema: T
+): Promise<Output<T>> {
+  try {
+    const body = await readBody(event);
+    const parsed = await parseAsync<T>(schema, body);
+    return parsed;
+  } catch (error) {
+    throw createBadRequest(error);
+  }
 }
 
 /**
@@ -38,17 +37,16 @@ export async function useValidatedBody<T extends BaseSchemaAsync>(
  * @param schema - A Valibot Schema
  */
 export async function useValidatedParams<T extends BaseSchemaAsync>(
-    event: H3Event,
-    schema: T,
-  ): Promise<Output<T>> {
-    try {
-      const params = getRouterParams(event)
-      const parsed = await parseAsync<T>(schema, params)
-      return parsed
-    }
-    catch (error) {
-      throw createBadRequest(error)
-    }
+  event: H3Event,
+  schema: T
+): Promise<Output<T>> {
+  try {
+    const params = getRouterParams(event);
+    const parsed = await parseAsync<T>(schema, params);
+    return parsed;
+  } catch (error) {
+    throw createBadRequest(error);
+  }
 }
 
 /**
@@ -58,14 +56,13 @@ export async function useValidatedParams<T extends BaseSchemaAsync>(
  */
 export async function useValidatedQuery<T extends BaseSchemaAsync>(
   event: H3Event,
-  schema: T,
+  schema: T
 ): Promise<Output<T>> {
   try {
-    const query = getQuery(event)
-    const parsed = await parseAsync<T>(schema, query)
-    return parsed
-  }
-  catch (error) {
-    throw createBadRequest(error)
+    const query = getQuery(event);
+    const parsed = await parseAsync<T>(schema, query);
+    return parsed;
+  } catch (error) {
+    throw createBadRequest(error);
   }
 }

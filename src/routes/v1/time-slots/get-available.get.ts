@@ -15,5 +15,8 @@ export default defineEventHandler(async (event) => {
 
 const GetAvailableTimeSlotsSchema = v.objectAsync({
   service_id: v.string([v.uuid()]),
-  day: v.coerce(v.date([v.minValue(new Date())]), (v: string) => new Date(v)),
+  day: v.coerce(
+    v.date([v.minValue(new Date(), "Min value can not be less than now")]),
+    (v: string) => new Date(v)
+  ),
 });
