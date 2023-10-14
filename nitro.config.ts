@@ -17,4 +17,8 @@ export default defineNitroConfig({
     clientUrl: process.env.CLIENT_URL,
     mongoDbUri: process.env.MONGO_DB_URI,
   },
+  alias: {
+    "#models": "./src/models",
+    "#db": "./src/db",
+  },
 });
