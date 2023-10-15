@@ -1,3 +1,5 @@
+import path from "path";
+
 //https://nitro.unjs.io/config
 export default defineNitroConfig({
   srcDir: "src",
@@ -18,7 +20,7 @@ export default defineNitroConfig({
     mongoDbUri: process.env.MONGO_DB_URI,
   },
   alias: {
-    "#models": "./src/models",
-    "#db": "./src/db",
+    "#models": path.resolve("./src/models"),
+    "#db": path.resolve("./src/db"),
   },
 });

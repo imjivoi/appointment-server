@@ -2,7 +2,10 @@ import { Agenda } from "@hokify/agenda";
 
 const uri = process.env.MONGO_DB_URI;
 
-const agenda = new Agenda({ db: { address: uri, collection: "jobs" } });
+const agenda = new Agenda({
+  db: { address: uri, collection: "jobs" },
+  processEvery: 60,
+});
 
 agenda
   .on("ready", () => {

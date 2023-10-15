@@ -1,5 +1,5 @@
 import agenda from "../../agenda";
-import { sendAppointmentReminder } from "../mails";
+import { sendAppointmentReminder } from "#models/mails";
 
 export type JobType = "appointment-reminder";
 type JobData = {

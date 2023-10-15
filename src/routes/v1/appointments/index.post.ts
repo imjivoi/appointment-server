@@ -1,15 +1,12 @@
 import * as v from "valibot";
 
-import mailer from "../../../mailer";
-import { createAppointment } from "../../../models/appointments";
+import { createAppointment } from "#models/appointments";
 
 export default eventHandler(async (event) => {
   const { service_id, start_at, email, phone } = await useValidatedBody(
     event,
     CreateAppointmentSchema
   );
-
-  const config = useRuntimeConfig();
 
   const client = await useSupabaseClient();
 
@@ -54,24 +51,24 @@ export default eventHandler(async (event) => {
   );
 
   try {
-    const { data: appointmentToken, error: appointmentTokenError } =
-      await client
-        .from("appointment_tokens")
-        .insert({
-          token: generateConfirmToken(),
-          appointment_id: appointment.id,
-        })
-        .select()
-        .single();
-    const confirmLink = `${config.clientUrl}/confirm-appointment/${appointmentToken.token}`;
-    const cancelLink = `${config.clientUrl}/cancel-appointment/${appointmentToken.token}`;
-    await mailer.sendMail({
-      from: '"Fred Foo 👻" <foo@example.com>', // sender address
-      to: user.email, // list of receivers
-      subject: "Appointment confirmation", // Subject line
-      text: "Link for confirm appointment", // plain text body
-      html: `<div><a  href="${confirmLink}">Confirm</a><a href="${cancelLink}">Cancel</a></div>`,
-    });
+    // const { data: appointmentToken, error: appointmentTokenError } =
+    //   await client
+    //     .from("appointment_tokens")
+    //     .insert({
+    //       token: generateConfirmToken(),
+    //       appointment_id: appointment.id,
+    //     })
+    //     .select()
+    //     .single();
+    // const confirmLink = `${config.clientUrl}/confirm-appointment/${appointmentToken.token}`;
+    // const cancelLink = `${config.clientUrl}/cancel-appointment/${appointmentToken.token}`;
+    // await mailer.sendMail({
+    //   from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    //   to: user.email, // list of receivers
+    //   subject: "Appointment confirmation", // Subject line
+    //   text: "Link for confirm appointment", // plain text body
+    //   html: `<div><a  href="${confirmLink}">Confirm</a><a href="${cancelLink}">Cancel</a></div>`,
+    // });
   } catch (error) {}
 
   return appointment;
